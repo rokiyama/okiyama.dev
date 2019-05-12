@@ -854,6 +854,11 @@
   dependencies:
     lodash.throttle "^4.1.1"
 
+"@vuepress/plugin-blog@^1.0.0-alpha.47":
+  version "1.0.0-alpha.47"
+  resolved "https://registry.yarnpkg.com/@vuepress/plugin-blog/-/plugin-blog-1.0.0-alpha.47.tgz#d453e79c1cd945ac9e4549984d9f0813219a8c1e"
+  integrity sha512-8E4syDxQuSS1Ci9l6JjpbelmnboQjv4y4H1QllxqJJ5XsnMqW5KXMSkTK31+8tgTqWyEFcBdrOvEa2/5OEApAQ==
+
 "@vuepress/plugin-last-updated@^1.0.0-alpha.47":
   version "1.0.0-alpha.47"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-last-updated/-/plugin-last-updated-1.0.0-alpha.47.tgz#ff764b8397e8184e03a8f6b13b1482ea4f3b11eb"

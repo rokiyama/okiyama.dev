@@ -1,3 +1,3 @@
 ## About
 
-rokiyama's website.
+rokiyama's blog.

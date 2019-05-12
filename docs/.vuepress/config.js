@@ -1,12 +1,18 @@
 module.exports = {
+  plugins: ["@vuepress/blog"],
   themeConfig: {
-    nav: [{ text: "About", link: "/about/" }]
+    lastUpdated: "Last Updated",
+    nav: [
+      { text: "About", link: "/about/" },
+      { text: "Tags", link: "/tag/" },
+      { text: "Categories", link: "/category/" }
+    ]
   },
   locales: {
     "/": {
       lang: "ja-JP",
-      title: "rokiyama.dev",
-      description: "rokiyama's website."
+      title: "blog.rokiyama.dev",
+      description: "rokiyama's blog."
     }
   }
 };

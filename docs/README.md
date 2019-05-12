@@ -1,10 +1,10 @@
 ---
 home: true
-heroText: rokiyama.dev
-description: rokiyama's website.
+heroText: blog.rokiyama.dev
+description: rokiyama's blog.
 footer: Copyright © 2019 rokiyama.dev
 ---
 
-[About](/about/)
+<Blogs />
 
-[Blog](/blog/)
+<p />
