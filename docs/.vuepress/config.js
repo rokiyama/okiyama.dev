@@ -1,4 +1,12 @@
 module.exports = {
-  title: "Hello VuePress",
-  description: "Just playing around"
+  themeConfig: {
+    nav: [{ text: "About", link: "/about/" }]
+  },
+  locales: {
+    "/": {
+      lang: "ja-JP",
+      title: "rokiyama.dev",
+      description: "rokiyama's website."
+    }
+  }
 };
