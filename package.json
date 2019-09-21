@@ -5,8 +5,8 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@vuepress/plugin-blog": "^1.0.0-alpha.47",
-    "vuepress": "^1.0.0-alpha.47"
+    "@vuepress/plugin-blog": "^1.2.5",
+    "vuepress": "^1.1.0"
   },
   "scripts": {
     "docs:dev": "vuepress dev docs",
