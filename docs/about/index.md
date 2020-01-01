@@ -1,3 +1,0 @@
-## About
-
-rokiyama's blog.

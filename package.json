@@ -1,15 +1,20 @@
 {
-  "name": "blog",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "name": "blog.rokiyama.dev",
   "private": true,
-  "devDependencies": {
-    "@vuepress/plugin-blog": "^1.7.0",
-    "vuepress": "^1.2.0"
-  },
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "build": "gridsome build",
+    "develop": "gridsome develop",
+    "explore": "gridsome explore"
+  },
+  "dependencies": {
+    "@gridsome/plugin-google-analytics": "^0.1.0",
+    "@gridsome/remark-prismjs": "^0.2.0",
+    "@gridsome/source-filesystem": "^0.6.0",
+    "@gridsome/transformer-remark": "^0.3.0",
+    "gridsome": "^0.7.0"
+  },
+  "devDependencies": {
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.0"
   }
 }
