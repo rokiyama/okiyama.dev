@@ -46,7 +46,7 @@ export default {
     PostCard
   },
   metaInfo: {
-    title: "Hello, world!"
+    title: "Index"
   }
 };
 </script>
