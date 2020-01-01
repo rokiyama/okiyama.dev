@@ -3,7 +3,7 @@
     <g-image
       alt="Author image"
       class="author__image"
-      src="~/assets/images/author.jpg"
+      src="~/assets/images/rokiyama.png"
       width="180"
       height="180"
       blur="5"
@@ -14,13 +14,11 @@
     </h1>
 
     <p class="author__intro">
-      A simple, hackable & minimalistic starter for Gridsome that uses Markdown
-      for content.
+      {{ $static.metadata.siteDescription }}
     </p>
 
     <p class="author__links">
-      <a href="//twitter.com/gridsome">Follow on Twitter</a>
-      <a href="//github.com/gridsome/gridsome-starter-blog">GitHub</a>
+      <a href="//github.com/rokiyama">GitHub</a>
     </p>
   </div>
 </template>
@@ -29,6 +27,7 @@
 query {
   metadata {
     siteName
+		siteDescription
   }
 }
 </static-query>

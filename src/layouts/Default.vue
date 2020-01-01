@@ -16,11 +16,12 @@
 
     <footer class="footer">
       <span class="footer__copyright"
-        >Copyright © {{ new Date().getFullYear() }}.
-      </span>
-      <span class="footer__links"
-        >Powered by <a href="//gridsome.org"> Gridsome </a></span
+        >Copyright © {{ new Date().getFullYear() }}.</span
       >
+      <span class="footer__links">
+        Powered by
+        <a href="//gridsome.org">Gridsome</a>
+      </span>
     </footer>
   </div>
 </template>
@@ -36,6 +37,11 @@ export default {
   components: {
     Logo,
     ToggleTheme
+  },
+  metaInfo: {
+    htmlAttrs: {
+      lang: "ja"
+    }
   }
 };
 </script>
