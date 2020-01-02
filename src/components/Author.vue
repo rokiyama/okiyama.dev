@@ -18,7 +18,7 @@
     </p>
 
     <p class="author__links">
-      <a href="//github.com/rokiyama">GitHub</a>
+      <a href="//github.com/rokiyama">github.com/rokiyama</a>
     </p>
   </div>
 </template>
