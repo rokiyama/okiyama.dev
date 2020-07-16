@@ -49,8 +49,25 @@ golang ではディレクトリ名＝パッケージ名とする慣習で、か�
 
 memo:
 
-- unexported struct を使うか、 interface を公開するか https://github.com/golang/lint/issues/210
-  - interface を使った方が良さそう。
-    - lint 警告、呼び元でその型を使えなくなる、 godoc 出力の対象になる (issue のコメントより: https://github.com/golang/lint/issues/210 )
-    - その interface を実装する struct を複数作る際、 struct 毎に関数コメントを書く必要がなくなる https://tyru.hatenablog.com/entry/2018/04/23/000314
+### unexported struct を使うか、 interface を公開するか
 
+https://github.com/golang/lint/issues/210
+
+- interface を使った方が良さそう。
+  - lint 警告、呼び元でその型を使えなくなる、 godoc 出力の対象になる (上記 issue のコメントより)
+  - その interface を実装する struct を複数作る際、 struct 毎に関数コメントを書く必要がなくなる https://tyru.hatenablog.com/entry/2018/04/23/000314
+
+CodeReviewComments (go 公式 wiki の一部) の interface に関する記述も、この方向を示唆している:
+
+> Go interfaces generally belong in the package that uses values of the interface type, not the package that implements those values. The implementing package should return concrete (usually pointer or struct) types: that way, new methods can be added to implementations without requiring extensive refactoring.
+> 
+> Goインタフェースは通常、インタフェースタイプの値を実装するパッケージではなく、それらの値を使用するパッケージに属します。実装パッケージは具象(通常ポインタか構造体)型を返す必要があります。そうすれば、大規模なリファクタリングを必要とせずに新しいメソッドを実装に追加することができます。
+> 
+> https://github.com/golang/go/wiki/CodeReviewComments#interfaces
+
+一方、これらの方針は、 [こちらで紹介されている Accept interfaces,return structs という考え方](https://qiita.com/weloan/items/de3b1bcabd329ec61709) とは競合するように思われる。
+
+次はこれを読んでみる: https://qiita.com/ogady/items/34aae1b2af3080e0fec4
+
+
+```
