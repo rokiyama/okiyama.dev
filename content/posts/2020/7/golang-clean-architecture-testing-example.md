@@ -32,7 +32,7 @@ go mod init github.com/<ユーザ名>/example-golang-app
 
 ディレクトリ構成を決めます。ここで、 clean architecture を参考にレイヤーを考え、それをディレクトリ構成としましょう。
 
-![](https://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg)
+https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 
 リンク先に clean architecture の図があります。これを見ると、4つのレイヤーに分かれています。
 golang ではディレクトリ名＝パッケージ名とする慣習で、かつ、簡潔なパッケージ名が好まれる傾向があるようですので、少し改名し、以下のディレクトリを作成します。
@@ -49,4 +49,8 @@ golang ではディレクトリ名＝パッケージ名とする慣習で、か�
 
 memo:
 
-unexported struct を使うか、 interface を公開するか https://github.com/golang/lint/issues/210
+- unexported struct を使うか、 interface を公開するか https://github.com/golang/lint/issues/210
+  - interface を使った方が良さそう。
+    - lint 警告、呼び元でその型を使えなくなる、 godoc 出力の対象になる (issue のコメントより: https://github.com/golang/lint/issues/210 )
+    - その interface を実装する struct を複数作る際、 struct 毎に関数コメントを書く必要がなくなる https://tyru.hatenablog.com/entry/2018/04/23/000314
+
