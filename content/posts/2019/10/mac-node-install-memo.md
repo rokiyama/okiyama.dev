@@ -20,10 +20,12 @@ git clone https://github.com/nvm-sh/nvm.git .nvm
 nvm install node && nvm alias default node
 ```
 
-## yarn は brew install で入れる
+## yarn は ~~brew install で入れる~~ npm で入れる
 
 ```bash
-brew install yarn --ignore-dependencies
+#brew install yarn --ignore-dependencies
+
+npm i -g yarn
 ```
 
 ## fish shell の場合
