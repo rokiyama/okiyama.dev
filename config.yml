@@ -1,0 +1,18 @@
+baseURL: "https://rokiyama.dev/"
+languageCode: "ja"
+title: "rokiyama.dev"
+theme: "PaperMod"
+
+DefaultContentLanguage: "ja"
+
+params:
+  homeInfoParams:
+    Title: "rokiyama.dev"
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/rokiyama"
+    - name: twitter
+      url: "https://twitter.com/rokiyama_dev"
+    - name: rss
+      url: "index.xml"
