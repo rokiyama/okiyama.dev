@@ -8,7 +8,6 @@ DefaultContentLanguage: "ja"
 params:
   homeInfoParams:
     Title: "rokiyama.dev"
-
   socialIcons:
     - name: github
       url: "https://github.com/rokiyama"
@@ -16,3 +15,4 @@ params:
       url: "https://twitter.com/rokiyama_dev"
     - name: rss
       url: "index.xml"
+  ShowPostNavLinks: true
