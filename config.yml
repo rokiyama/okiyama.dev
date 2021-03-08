@@ -16,3 +16,4 @@ params:
     - name: rss
       url: "index.xml"
   ShowPostNavLinks: true
+  hideSummary: true
