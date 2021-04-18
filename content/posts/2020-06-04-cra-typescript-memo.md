@@ -1,6 +1,5 @@
 ---
 title: CRA + TypeScript プロジェクト作成時のメモ
-canonicalLink: cra-typescript-memo
 date: 2020-06-04
 draft: false
 tags: ['memo', 'react', 'cra', 'typescript']

@@ -1,6 +1,5 @@
 ---
 title: golang でサーバアプリを作る - clean architecture で、テストを書きながら
-canonicalLink: golang-clean-architecture-testing-example
 date: 2020-07-11
 draft: true
 tags: ['article', 'golang', 'clean-architecture', 'testing']

@@ -1,6 +1,5 @@
 ---
 title: Golang の go-cmp で protobuf の struct を Diff する時、 cannot handle unexported field のような panic になる場合は protocmp.Transform() を試してみると良い
-canonicalLink: go-cmp-diff-protobuf
 date: 2020-09-11
 draft: false
 tags: ['memo', 'golang', 'protobuf']

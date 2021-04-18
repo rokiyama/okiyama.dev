@@ -1,6 +1,5 @@
 ---
 title: mac node インストールメモ
-canonicalLink: mac-node-install-memo
 date: 2019-10-03
 draft: false
 tags: ['memo', 'mac', 'node']

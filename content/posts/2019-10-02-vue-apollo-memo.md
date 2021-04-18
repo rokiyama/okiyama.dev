@@ -1,6 +1,5 @@
 ---
 title: vue-apollo メモ
-canonicalLink: vue-apollo-memo
 date: 2019-10-02
 draft: false
 tags: ['memo', 'vue-apollo']
