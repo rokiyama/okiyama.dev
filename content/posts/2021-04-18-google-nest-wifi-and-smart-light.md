@@ -25,6 +25,6 @@ https://store.google.com/jp/product/nest_wifi
 2. 2.4GHz で接続される程度に家から離れてからセットアップする
 3. Nest Wifi を停止した状態でスマホを Wifi AP にし、 Nest Wifi で使う SSID/WPA キーと同じものにしてデバイスを接続・セットアップする
 
-2 の家から離れるというのは、 5GHz は遠くまで届かないが 2.4GHz は低周波で遠くまで届く特性があ利、両方の周波数に対応しているスマホは 5GHz に優先して接続するが、ルーターから離れて電波が減衰すると 2.4GHz にフォールバックするのでその状態で IoT デバイスのセットアップをする、ということらしい。
+2 の家から離れるというのは、 5GHz は遠くまで届かないが 2.4GHz は低周波で遠くまで届く特性があり、両方の周波数に対応しているスマホは 5GHz に優先して接続するが、ルーターから離れて電波が減衰すると 2.4GHz にフォールバックするのでその状態で IoT デバイスのセットアップをする、ということらしい。
 
 参考: [How do force Google Wifi to 2.4 Ghz only? - Google Nest Community](https://support.google.com/googlenest/thread/611640)
