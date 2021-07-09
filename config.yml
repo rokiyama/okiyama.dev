@@ -18,5 +18,6 @@ params:
   showPostNavLinks: true
   hideSummary: true
   dateFormat: 'Mon, Jan 2, 2006, 3:04 PM GMT-07'
+  showFullTextinRSS: true
 
   googleAnalytics: G-TBC439E3VT
