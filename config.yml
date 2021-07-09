@@ -17,6 +17,6 @@ params:
       url: "index.xml"
   showPostNavLinks: true
   hideSummary: true
-  dateFormat: 'Mon, Jan 2 2006, 3:04 PM GMT-07'
+  dateFormat: 'Mon, Jan 2, 2006, 3:04 PM GMT-07'
 
   googleAnalytics: G-TBC439E3VT
