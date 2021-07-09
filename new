@@ -1,4 +1,0 @@
-#!/bin/sh
-set -ue
-
-hugo new posts/"$(date '+%Y-%m-%d')-$*.md"
