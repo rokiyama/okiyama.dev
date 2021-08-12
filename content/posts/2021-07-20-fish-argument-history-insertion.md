@@ -31,5 +31,3 @@ git add init.sh
 
 この例だとファイル名が短いのであまりメリットはないが、長いパスを指定する時などに便利。
 
-{{< youtube nVoCdwBpaYc >}}
-
