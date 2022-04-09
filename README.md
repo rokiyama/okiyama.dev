@@ -1,4 +1,4 @@
-# rokiyama.dev
+# okiyama.dev
 
 ```fish
 hugo server -D

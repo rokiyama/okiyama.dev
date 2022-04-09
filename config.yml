@@ -1,13 +1,13 @@
-baseURL: "https://rokiyama.dev/"
+baseURL: "https://okiyama.dev/"
 languageCode: "ja"
-title: "rokiyama.dev"
+title: "okiyama.dev"
 theme: "PaperMod"
 
 defaultContentLanguage: "ja"
 
 params:
   homeInfoParams:
-    Title: "rokiyama.dev"
+    Title: "okiyama.dev"
   socialIcons:
     - name: github
       url: "https://github.com/rokiyama"
