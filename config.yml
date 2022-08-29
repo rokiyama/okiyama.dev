@@ -2,6 +2,7 @@ baseURL: "https://okiyama.dev/"
 languageCode: "ja"
 title: "okiyama.dev"
 theme: "PaperMod"
+paginate: 100
 
 defaultContentLanguage: "ja"
 
