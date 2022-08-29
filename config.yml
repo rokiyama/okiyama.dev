@@ -15,6 +15,11 @@ menu:
       name: Search
       url: /search/
       weight: 20
+    - identifier: google_search
+      name: Search(Google)
+      url: https://www.google.com/search?q=site%3Aokiyama.dev+&ie=UTF-8
+      weight: 30
+
 params:
   homeInfoParams:
     Title: "okiyama.dev"
