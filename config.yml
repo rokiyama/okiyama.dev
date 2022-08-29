@@ -5,6 +5,16 @@ theme: "PaperMod"
 
 defaultContentLanguage: "ja"
 
+menu:
+  main:
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 10
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 20
 params:
   homeInfoParams:
     Title: "okiyama.dev"
@@ -21,3 +31,9 @@ params:
   showFullTextinRSS: true
 
   googleAnalytics: G-TBC439E3VT
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
