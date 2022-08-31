@@ -1,7 +1,7 @@
 ---
-title: macOS Monterey にしたら fish shell で ls がカラー表示されない
+title: macOS Monterey (M1 Mac) にしたら fish shell で ls がカラー表示されない
 date: 2021-11-12T10:22:02+09:00
-tags: [memo, fish]
+tags: [memo, fish, mac]
 ---
 
 ## 対処法
@@ -95,3 +95,5 @@ SYNOPSIS
 
 macOS 12.0                           August 31, 2020                           macOS 12.0
 ```
+
+<ins>追記: Big Sur は Intel Mac で、 Monterey は M1 Mac で使用していた。</ins>
