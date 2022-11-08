@@ -28,7 +28,7 @@ params:
     - name: github
       url: "https://github.com/rokiyama"
     - name: twitter
-      url: "https://twitter.com/oki_dev"
+      url: "https://twitter.com/okiyama_rei"
     - name: rss
       url: "index.xml"
   showPostNavLinks: true
