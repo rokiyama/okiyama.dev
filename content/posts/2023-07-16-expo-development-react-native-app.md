@@ -4,7 +4,7 @@ date: 2023-07-16T16:52:54+09:00
 tags: [memo]
 ---
 
-Expo で作ったアプリを App Store に公開しました。 (現在は iOS のみ)
+Expo で作ったアプリを App Store に公開しました。 (今のところ iOS のみ)
 
 https://apps.apple.com/jp/app/ai-prompt-editor/id6448696132
 
