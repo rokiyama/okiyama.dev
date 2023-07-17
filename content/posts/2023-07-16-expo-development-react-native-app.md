@@ -12,7 +12,7 @@ https://apps.apple.com/jp/app/ai-prompt-editor/id6448696132
 
 システム構成は以下のようになっています。
 
-<iframe frameborder="0" style="width:100%;height:600px;" src="https://viewer.diagrams.net/?nav=1&title=expo-app.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1dH8J7FQQLBlIJXbNckm2AGNXzH99Mov5%26export%3Ddownload"></iframe>
+![](/images/expo-app.drawio.svg)
 
 フロントエンドは TypeScript で書かれていて、 Expo を使った React Native アプリになっています。
 
