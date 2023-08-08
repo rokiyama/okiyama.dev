@@ -40,9 +40,15 @@ Prettier が登場した当初は、エディタとの統合はまだ存在し�
 }
 ```
 
-eslint-config-prettier だけを有効にする場合、 `extends` に `prettier` を追加するだけでよいです。
+現在は eslint-config-prettier だけを有効にすればよいので、 Prettier 関連で eslintrc に必要な設定はこれだけです。
 
-また、 `prettier/react` や `prettier/vue` のように他のプラグインと共存するための設定は [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier/blob/19826807f2d668a05bb9c29a5f6f6a6e6e3287e4/CHANGELOG.md#version-800-2021-02-21) の 8.0.0 から不要になったようです。
+```json
+{
+  "extends": ["prettier"]
+}
+```
+
+なお、以前は `prettier/react` や `prettier/vue` のような他のプラグインと共存するための設定も存在したようですが、 [eslint-config-prettier の 8.0.0](https://github.com/prettier/eslint-config-prettier/blob/19826807f2d668a05bb9c29a5f6f6a6e6e3287e4/CHANGELOG.md#version-800-2021-02-21) から不要になったようです。
 
 ## CI で ESLint と同時に Prettier のチェックも実行する
 
