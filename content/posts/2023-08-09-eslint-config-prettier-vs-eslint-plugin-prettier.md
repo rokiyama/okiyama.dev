@@ -6,6 +6,8 @@ tags: [memo, eslint, prettier]
 
 [Prettier 公式サイトの説明](https://prettier.io/docs/en/integrating-with-linters) によると、 eslint-config-prettier が紹介される一方、 eslint-plugin-prettier は非推奨とされています。
 
+それぞれがどのような機能のパッケージなのか調べてみました。
+
 ## eslint-config-prettier: Prettier と競合する ESLint ルールを無効にする
 
 https://github.com/prettier/eslint-config-prettier
@@ -52,7 +54,7 @@ Prettier が登場した当初は、エディタとの統合はまだ存在し�
 
 ## CI で ESLint と同時に Prettier のチェックも実行する
 
-CI で ESLint を実行しているなら、 `prettier --check` コマンドも同時に実行するとよいかもしれません。エディタ設定の不備を検出できます。
+CI で ESLint を実行しているなら、 `prettier --check` コマンドも同時に実行するとよいかもしれません。フォーマットが適用されていないファイルを検出できます。
 
 例として CI で `npm run lint` を実行している場合、以下のように設定します。
 
