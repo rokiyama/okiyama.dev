@@ -1,7 +1,7 @@
 ---
 title: Expo でのモバイルアプリ開発、ローカル環境からストア公開まで
 date: 2023-07-16T16:52:54+09:00
-tags: [memo]
+tags: [pinned, expo, react-native, react]
 ---
 
 Expo で作ったアプリを App Store に公開しました。 (今のところ iOS のみ)

@@ -1,7 +1,7 @@
 ---
 title: eslint-config-prettier と eslint-plugin-prettier
 date: 2023-08-09T08:34:43+09:00
-tags: [memo, eslint, prettier]
+tags: [memo, eslint, prettier, node]
 ---
 
 [Prettier 公式サイトの説明](https://prettier.io/docs/en/integrating-with-linters) によると、 eslint-config-prettier が紹介される一方、 eslint-plugin-prettier は非推奨とされています。
