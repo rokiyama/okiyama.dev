@@ -2,4 +2,5 @@
   margin: auto 0;
   padding: 4px 4px;
   font-size: 1em;
+  white-space: pre-wrap;
 }
