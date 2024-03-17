@@ -31,13 +31,13 @@ params:
   socialIcons:
     - name: github
       url: "https://github.com/rokiyama"
-    - name: twitter
+    - name: x
       url: "https://twitter.com/okiyama_rei"
     - name: rss
       url: "index.xml"
   showPostNavLinks: true
   hideSummary: true
-  dateFormat: '2006/1/2 (Mon) 15:04 MST'
+  dateFormat: "2006/1/2 (Mon) 15:04 MST"
   showFullTextinRSS: true
 
   googleAnalytics: G-TBC439E3VT
