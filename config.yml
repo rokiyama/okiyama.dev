@@ -39,6 +39,8 @@ params:
   hideSummary: true
   dateFormat: "2006/1/2 (Mon) 15:04 MST"
   showFullTextinRSS: true
+  showtoc: true
+  tocopen: true
 
   googleAnalytics: G-TBC439E3VT
 
