@@ -250,6 +250,51 @@ Uncaught SyntaxError: Invalid or unexpected token (at index-SKSNfXQs.js:3:8090)
 
 - [What happened inside of (1).toString() and 1.toString() in Javascript](https://stackoverflow.com/questions/38968598/what-happened-inside-of-1-tostring-and-1-tostring-in-javascript)
 
+## Browserslist を Vite で使用するための設定
+
+Vite では browserslist を使うのに設定が必要です。
+
+- [Browserslist support · vitejs vite · Discussion #6849](https://github.com/vitejs/vite/discussions/6849)
+
+```sh
+yarn add -D browserslist-to-esbuild
+```
+
+`vite.config.ts` に以下を追加:
+
+```diff
+ export default defineConfig({
+   plugins: [react()],
++  build: {
++    target:
++      process.env.NODE_ENV === 'production' &&
++      browserslistToEsbuild(['>0.2%', 'not dead', 'not op_mini all']),
++  },
+```
+
+### 設定変更: ie11 を削除
+
+上記の設定では既に削除されていますが、 ie11 があると `Maximum call stack size` というエラーが発生するため削除しました。 (既に Internet Explorer はサポート対象外だったのですが、 Browserslist 設定に残ってしまっていた)
+
+エラーログ:
+
+```
+✓ 5956 modules transformed.
+✓ built in 6m 29s
+error during build:
+RangeError: Maximum call stack size exceeded
+    at String.substring (<anonymous>)
+    at replaceClose (file:///<snip>/node_modules/vite/dist/node/chunks/dep-R0I0XnyH.js:109:21)
+    at replaceClose (file:///<snip>/node_modules/vite/dist/node/chunks/dep-R0I0XnyH.js:112:30)
+    at replaceClose (file:///<snip>/node_modules/vite/dist/node/chunks/dep-R0I0XnyH.js:112:30)
+    at replaceClose (file:///<snip>/node_modules/vite/dist/node/chunks/dep-R0I0XnyH.js:112:30)
+    at replaceClose (file:///<snip>/node_modules/vite/dist/node/chunks/dep-R0I0XnyH.js:112:30)
+    at replaceClose (file:///<snip>/node_modules/vite/dist/node/chunks/dep-R0I0XnyH.js:112:30)
+    at replaceClose (file:///<snip>/node_modules/vite/dist/node/chunks/dep-R0I0XnyH.js:112:30)
+    at replaceClose (file:///<snip>/node_modules/vite/dist/node/chunks/dep-R0I0XnyH.js:112:30)
+    at replaceClose (file:///<snip>/node_modules/vite/dist/node/chunks/dep-R0I0XnyH.js:112:30)
+```
+
 # Jest 関連の移行
 
 のちに [Vitest](https://vitest.dev/) へと移行するのですが、まずは [Jest](https://jestjs.io/) のまま動かすことにしました。
