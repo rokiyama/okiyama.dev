@@ -17,6 +17,8 @@ tags:
   - storybook
 ---
 
+_2024-04-13 Updated: eslint-plugin-tailwindcss の章を追加_
+
 Vite で TypeScript の React プロジェクトを作る手順のメモです。
 
 Tailwind や Redux など常に必要なわけではないライブラリも含まれるのでご注意ください。
@@ -353,6 +355,46 @@ pnpm install -D prettier-plugin-classnames prettier-plugin-merge
    "tailwindFunctions": ["clsx"]
  }
 ```
+
+## eslint-plugin-tailwindcss
+
+[eslint-plugin-tailwindcss - npm](https://www.npmjs.com/package/eslint-plugin-tailwindcss)
+
+ESLint プラグインです。 Tailwind のクラス名以外を検出などのルールがあります。
+
+```sh
+pnpm install -D eslint-plugin-tailwindcss
+```
+
+`.eslintrc.cjs` を修正:
+
+```diff
+@@ -9,6 +9,7 @@ module.exports = {
+     'plugin:@typescript-eslint/recommended',
+     'plugin:@typescript-eslint/recommended-type-checked',
+     'plugin:react-hooks/recommended',
++    'plugin:tailwindcss/recommended',
+     'prettier',
+   ],
+   ignorePatterns: ['dist', '.eslintrc.cjs'],
+@@ -16,12 +17,13 @@ module.exports = {
+   parserOptions: {
+     project: ['./tsconfig.json', './tsconfig.node.json'],
+   },
+-  plugins: ['react-refresh'],
++  plugins: ['react-refresh', 'tailwindcss'],
+   rules: {
+     'react-refresh/only-export-components': [
+       'warn',
+       { allowConstantExport: true },
+     ],
+     '@typescript-eslint/no-unused-vars': 'warn',
++    'tailwindcss/classnames-order': 'off',
+   },
+ }
+```
+
+rules で `tailwindcss/classnames-order` を `off` にしているのは、クラス名のソートは `prettier-plugin-tailwindcss` に任せるためです。
 
 # Redux Toolkit, react-redux
 
