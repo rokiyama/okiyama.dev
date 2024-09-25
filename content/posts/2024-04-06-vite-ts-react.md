@@ -19,6 +19,8 @@ tags:
 
 _2024-04-13 Updated: eslint-plugin-tailwindcss の章を追加_
 
+_2024-09-25 Updated: eslint flat config に対応_
+
 Vite で TypeScript の React プロジェクトを作る手順のメモです。
 
 Tailwind や Redux など常に必要なわけではないライブラリも含まれるのでご注意ください。
@@ -66,17 +68,23 @@ echo '{
 echo pnpm-lock.yaml > .prettierignore
 ```
 
-`.eslintrc.cjs` の extends に追加:
+`eslint.config.js` に追加:
 
 ```diff
-@@ -5,6 +5,7 @@ module.exports = {
-     'eslint:recommended',
-     'plugin:@typescript-eslint/recommended',
-     'plugin:react-hooks/recommended',
-+    'prettier',
-   ],
-   ignorePatterns: ['dist', '.eslintrc.cjs'],
-   parser: '@typescript-eslint/parser',
+@@ -3,6 +3,7 @@ import globals from 'globals'
+ import reactHooks from 'eslint-plugin-react-hooks'
+ import reactRefresh from 'eslint-plugin-react-refresh'
+ import tseslint from 'typescript-eslint'
++import eslintConfigPrettier from 'eslint-config-prettier'
+
+ export default tseslint.config(
+   { ignores: ['dist'] },
+@@ -25,4 +26,5 @@ export default tseslint.config(
+       ],
+     },
+   },
++  eslintConfigPrettier,
+ )
 ```
 
 `package.json` の scripts にコマンドを追加:
@@ -127,53 +135,98 @@ pnpm install -D @trivago/prettier-plugin-sort-imports
 
 テンプレートの ESLint の設定はいくつかの recommended 設定が最初から有効ですが、 `@typescript-eslint/recommended-type-checked` も追加します。
 
-## @ts-check をオンにする
+## optional: @ts-check をオンにする
 
-`.eslintrc.cjs` を修正:
+`eslint.config.js` の先頭に `@ts-check` を追加します。
 
 ```diff
-@@ -1,3 +1,6 @@
+@@ -1,3 +1,4 @@
 +// @ts-check
-+
-+/** @type {import('eslint').Linter.Config} */
- module.exports = {
-   root: true,
-   env: { browser: true, es2020: true },
+ import js from '@eslint/js'
+ import eslintConfigPrettier from 'eslint-config-prettier'
+ import reactHooks from 'eslint-plugin-react-hooks'
 ```
+
+ただし、これを執筆している時点 (2024-09-25) では `@ts-check` を追加すると `react-hooks` と `rules` の箇所でコンパイルエラーが表示されます。
+以下のいずれかの対応を選択することになります。
+
+- `@ts-check` を追加しない
+  - エラーを検出できなくなるが、気にしないという判断。
+  - 追加しなくても、無効な設定を書いてしまった場合は ESLint がエラーを出すので気付ける。
+  - 追加しなくとも、
+    [tseslint.config() の効果](https://typescript-eslint.io/packages/typescript-eslint#config)
+    でエディタの TypeScript 補完は効く。
+- 追加した上で、エラーを無視する
+  - VSCode などエディタ上でエラーになるだけで、ビルドなどは問題ない。したがってエラーが出る状態にしておき、単に無視する。
+  - 将来的にプラグイン側で対応されたら解消するはず。
 
 ## @typescript-eslint/recommended-type-checked をオンにする
 
-[no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) などのルールが含まれる設定です。
+通常の `@typescript-eslint/recommended` のルールに加え、 TypeScript の型情報を使う設定です。
+[no-floating-promises](https://typescript-eslint.io/rules/no-floating-promises/) などのルールが含まれます。
 
-`.eslintrc.cjs` を修正:
+`eslint.config.js` を修正:
 
 ```diff
-@@ -7,11 +7,15 @@ module.exports = {
-   extends: [
-     'eslint:recommended',
-     'plugin:@typescript-eslint/recommended',
-+    'plugin:@typescript-eslint/recommended-type-checked',
-     'plugin:react-hooks/recommended',
-     'prettier',
-   ],
-   ignorePatterns: ['dist', '.eslintrc.cjs'],
-   parser: '@typescript-eslint/parser',
-+  parserOptions: {
-+    project: ['./tsconfig.json', './tsconfig.node.json'],
-+  },
-   plugins: ['react-refresh'],
-   rules: {
-     'react-refresh/only-export-components': [
+@@ -9,7 +9,10 @@ import tseslint from 'typescript-eslint'
+ export default tseslint.config(
+   { ignores: ['dist'] },
+   {
+-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
++    extends: [
++      js.configs.recommended,
++      ...tseslint.configs.recommendedTypeChecked,
++    ],
+     files: ['**/*.{ts,tsx}'],
+     languageOptions: {
+       ecmaVersion: 2020,
+```
+
+### parserOptions.project を追加
+
+以下のエラーが起きるようになります。
+
+```
+Oops! Something went wrong! :(
+
+ESLint: 9.11.1
+
+Error: Error while loading rule '@typescript-eslint/await-thenable': You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.
+Parser: typescript-eslint/parser
+Occurred while linting (snip)/src/main.tsx
+# snip
+ ELIFECYCLE  Command failed with exit code 2.
+```
+
+`eslint.config.js` に以下の設定を追加すると解消します。
+
+```ts
+export default tseslint.config(
+  { ignores: ["dist"] },
+  {
+    /* snip */
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+      parserOptions: {
+        // languageOptions の子として追加
+        project: ["./tsconfig.app.json", "./tsconfig.node.json"],
+      },
+    },
+    /* snip */
+  },
+  eslintConfigPrettier
+);
 ```
 
 ## tsconfig の noUnused... をオフ + ESLint の @typescript-eslint/no-unused-vars を warn に
 
 noUnusedLocals と noUnusedParameters を無効にし、 ESLint の [@typescript-eslint/no-unused-vars](https://typescript-eslint.io/rules/no-unused-vars/) を warn にします。
 
-`tsconfig.json`:
+`tsconfig.app.json`:
 
 ```diff
-@@ -16,9 +16,10 @@
+@@ -16,8 +16,8 @@
 
      /* Linting */
      "strict": true,
@@ -183,25 +236,52 @@ noUnusedLocals と noUnusedParameters を無効にし、 ESLint の [@typescript
 +    "noUnusedParameters": false,
      "noFallthroughCasesInSwitch": true
    },
-   "include": ["src"],
-   "references": [{ "path": "./tsconfig.node.json" }]
+   "include": ["src"]
 ```
 
-`.eslintrc.cjs`:
+`eslint.config.js`:
 
-```diff
-@@ -22,5 +22,6 @@ module.exports = {
-       'warn',
-       { allowConstantExport: true },
-     ],
-+    '@typescript-eslint/no-unused-vars': 'warn',
-   },
- }
+```ts
+export default tseslint.config(
+  { ignores: ["dist"] },
+  {
+    /* snip */
+    rules: {
+      /* snip */
+      "@typescript-eslint/no-unused-vars": "warn", // rules の子として追加
+    },
+  },
+  eslintConfigPrettier
+);
 ```
 
 この設定は tsconfig と ESLint で重複するため ESLint に任せることにします。また新しい変数を書いたそばからエラーになるのは邪魔に感じるため、個人的には error でなく warn にしたい。
 
 @typescript-eslint/no-unused-vars は recommended 設定だと error に設定されているため、 warn に変更しています。この場合 CI で warn を許さないようにチェックするとよいでしょう。
+
+例: CI では error レベルにし、かつ `_` 始まりの変数は許容する設定
+
+```ts
+const isCI = process.env.CI;
+
+export default tseslint.config(
+  { ignores: ["dist"] },
+  {
+    /* snip */
+    rules: {
+      /* snip */
+      "@typescript-eslint/no-unused-vars": [
+        isCI ? "error" : "warn",
+        {
+          argsIgnorePattern: "_",
+          varsIgnorePattern: "^_+$",
+        },
+      ],
+    },
+  },
+  eslintConfigPrettier
+);
+```
 
 ## tsconfig の compileOptions noUncheckedIndexedAccess を有効にする
 
@@ -210,17 +290,16 @@ noUnusedLocals と noUnusedParameters を無効にし、 ESLint の [@typescript
 `"strict": true` で有効にならないオプションですが、配列を安全に扱うのに有用なので設定しておきます。
 
 ```diff
-@@ -16,9 +16,10 @@
-
-     /* Linting */
+@@ -18,7 +18,8 @@
      "strict": true,
      "noUnusedLocals": false,
      "noUnusedParameters": false,
+-    "noFallthroughCasesInSwitch": true
 +    "noFallthroughCasesInSwitch": true,
 +    "noUncheckedIndexedAccess": true
    },
-   "include": ["src"],
-   "references": [{ "path": "./tsconfig.node.json" }]
+   "include": ["src"]
+ }
 ```
 
 # Tailwind CSS
@@ -298,12 +377,16 @@ pnpm install -D prettier-plugin-tailwindcss
 `.prettierrc` を修正:
 
 ```diff
+@@ -1,6 +1,9 @@
  {
    "singleQuote": true,
    "semi": false,
 -  "plugins": ["@trivago/prettier-plugin-sort-imports"],
-+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
-+  "importOrder": ["<THIRD_PARTY_MODULES>", "^[./]"]
++  "plugins": [
++    "@trivago/prettier-plugin-sort-imports",
++    "prettier-plugin-tailwindcss"
++  ],
+   "importOrder": ["<THIRD_PARTY_MODULES>", "^[./]"]
  }
 ```
 
@@ -341,18 +424,19 @@ pnpm install -D prettier-plugin-classnames prettier-plugin-merge
 `.prettierrc` を修正:
 
 ```diff
- {
-   "singleQuote": true,
+@@ -3,8 +3,11 @@
    "semi": false,
--  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
-+  "plugins": [
-+    "@trivago/prettier-plugin-sort-imports",
+   "plugins": [
+     "@trivago/prettier-plugin-sort-imports",
+-    "prettier-plugin-tailwindcss"
 +    "prettier-plugin-tailwindcss",
 +    "prettier-plugin-classnames",
 +    "prettier-plugin-merge"
-+  ],
-+  "endingPosition": "absolute-with-indent",
-   "tailwindFunctions": ["clsx"]
+   ],
+   "importOrder": ["<THIRD_PARTY_MODULES>", "^[./]"],
+-  "tailwindFunctions": ["clsx"]
++  "tailwindFunctions": ["clsx"],
++  "endingPosition": "absolute-with-indent"
  }
 ```
 
@@ -366,32 +450,26 @@ ESLint プラグインです。 Tailwind のクラス名以外を検出などの
 pnpm install -D eslint-plugin-tailwindcss
 ```
 
-`.eslintrc.cjs` を修正:
+`eslint.config.js` を修正:
 
-```diff
-@@ -9,6 +9,7 @@ module.exports = {
-     'plugin:@typescript-eslint/recommended',
-     'plugin:@typescript-eslint/recommended-type-checked',
-     'plugin:react-hooks/recommended',
-+    'plugin:tailwindcss/recommended',
-     'prettier',
-   ],
-   ignorePatterns: ['dist', '.eslintrc.cjs'],
-@@ -16,12 +17,13 @@ module.exports = {
-   parserOptions: {
-     project: ['./tsconfig.json', './tsconfig.node.json'],
-   },
--  plugins: ['react-refresh'],
-+  plugins: ['react-refresh', 'tailwindcss'],
-   rules: {
-     'react-refresh/only-export-components': [
-       'warn',
-       { allowConstantExport: true },
-     ],
-     '@typescript-eslint/no-unused-vars': 'warn',
-+    'tailwindcss/classnames-order': 'off',
-   },
- }
+```ts
+// import 追加
+import tailwind from "eslint-plugin-tailwindcss";
+
+/* snip */
+
+export default tseslint.config(
+  { ignores: ["dist"] },
+  ...tailwind.configs["flat/recommended"], // 追加
+  {
+    /* snip */
+    rules: {
+      /* snip */
+      "tailwindcss/classnames-order": "off", // rule 追加
+    },
+  },
+  eslintConfigPrettier
+);
 ```
 
 rules で `tailwindcss/classnames-order` を `off` にしているのは、クラス名のソートは `prettier-plugin-tailwindcss` に任せるためです。
@@ -529,6 +607,21 @@ pnpm install react-router-dom
 pnpm install -D vitest happy-dom
 ```
 
+`package.json` の scripts にコマンドを追加:
+
+```diff
+@@ -8,7 +8,8 @@
+     "build": "tsc -b && vite build",
+     "lint": "eslint .",
+     "preview": "vite preview",
+-    "format": "prettier --write ."
++    "format": "prettier --write .",
++    "test": "vitest"
+   },
+   "dependencies": {
+     "clsx": "^2.1.1",
+```
+
 `vitest.config.ts` を作成:
 
 ```ts
@@ -548,7 +641,7 @@ export default mergeConfig(
 
 `globals: true` の設定で `describe`, `test` などをインポートせずに使えるようになります。この設定を使う場合は tsconfig の設定も必要です。
 
-`tsconfig.json` を修正:
+`tsconfig.app.json` を修正:
 
 ```diff
 @@ -19,7 +19,10 @@
@@ -561,13 +654,11 @@ export default mergeConfig(
 +    /* Vitest */
 +    "types": ["vitest/globals"]
    },
-   "include": ["src"],
-   "references": [{ "path": "./tsconfig.node.json" }]
+   "include": ["src"]
+ }
 ```
 
 また、このファイルも `tsconfig.node.json` の `include` に追加しておきます。
-
-`tsconfig.json` を修正:
 
 ```diff
 @@ -7,5 +7,5 @@
@@ -610,17 +701,43 @@ import "@testing-library/jest-dom/vitest";
  )
 ```
 
-`tsconfig.json` を修正:
+`tsconfig.node.json` を修正:
 
 ```diff
-@@ -24,6 +24,6 @@
-     /* Vitest */
-     "types": ["vitest/globals"]
+@@ -18,5 +18,10 @@
+     "noUnusedParameters": true,
+     "noFallthroughCasesInSwitch": true
    },
--  "include": ["src"],
-+  "include": ["src", "vitest-setup.ts"],
-   "references": [{ "path": "./tsconfig.node.json" }]
+-  "include": ["vite.config.ts", "vitest.config.ts", "tailwind.config.ts"]
++  "include": [
++    "vite.config.ts",
++    "vitest.config.ts",
++    "vitest-setup.ts",
++    "tailwind.config.ts"
++  ]
  }
+```
+
+### テストコード
+
+以下のようにテストします。
+
+`src/App.test.tsx`:
+
+```tsx
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { App } from "./App";
+
+const user = userEvent.setup();
+
+it("App", async () => {
+  render(<App />);
+  await user.click(screen.getByText("count is 0"));
+  await waitFor(() => {
+    screen.getByText("count is 1");
+  });
+});
 ```
 
 ## MSW
