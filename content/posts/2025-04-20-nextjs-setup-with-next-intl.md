@@ -8,7 +8,7 @@ tags: [memo, nextjs, react]
 
 [create-next-app](https://nextjs.org/docs/app/api-reference/cli/create-next-app) コマンドで作成する。
 
-パッケージマネージャに pnpm を使用。そのほかデフォルトでないものとしては Tailwind CSS に Yes を指定。
+パッケージマネージャに pnpm を使用。選択肢は全てデフォルト。
 
 ```sh
 $ pnpx create-next-app@latest --use-pnpm example-nextjs
@@ -41,6 +41,8 @@ $ node -p 'process.versions.node.split(".")[0]' > .node-version
 - ESLint と Prettier 関連
 	- [eslint-plugin-tailwindcss](https://github.com/francoismassart/eslint-plugin-tailwindcss) は 2025-04-20 時点で Tailwind CSS v4 に対応していないため除外
 
+_2025-11-16 追記: Tailwind CSS v4 サポートを謳う [eslint-plugin-better-tailwindcss](https://github.com/schoero/eslint-plugin-better-tailwindcss) を追加_
+
 ```sh
 # dependencies
 $ pnpm add tailwind-variants next-intl
@@ -53,6 +55,7 @@ $ pnpm add -D \
     prettier-plugin-classnames \
     prettier-plugin-merge \
     prettier-plugin-tailwindcss \
+    eslint-plugin-better-tailwindcss
 ```
 
 ## ESLint 設定
@@ -60,24 +63,19 @@ $ pnpm add -D \
 prettier と TypeScript の未使用変数に関する設定を追加。
 
 ```diff
---- a/eslint.config.mjs
-+++ b/eslint.config.mjs
-@@ -1,16 +1,27 @@
 +// @ts-check
+ import nextVitals from "eslint-config-next/core-web-vitals";
+ import nextTs from "eslint-config-next/typescript";
 +import eslintConfigPrettier from "eslint-config-prettier";
- import { dirname } from "path";
- import { fileURLToPath } from "url";
- import { FlatCompat } from "@eslint/eslintrc";
++import eslintPluginBetterTailwindcss from "eslint-plugin-better-tailwindcss";
+ import { defineConfig, globalIgnores } from "eslint/config";
 
- const __filename = fileURLToPath(import.meta.url);
- const __dirname = dirname(__filename);
-
- const compat = new FlatCompat({
-   baseDirectory: __dirname,
- });
-
- const eslintConfig = [
-   ...compat.extends("next/core-web-vitals", "next/typescript"),
+ const eslintConfig = defineConfig([
+   ...nextVitals,
+@@ -13,6 +16,30 @@ const eslintConfig = defineConfig([
+     "build/**",
+     "next-env.d.ts",
+   ]),
 +  eslintConfigPrettier,
 +  {
 +    rules: {
@@ -87,10 +85,35 @@ prettier と TypeScript の未使用変数に関する設定を追加。
 +      ],
 +    },
 +  },
- ];
++  {
++    plugins: {
++      "better-tailwindcss": eslintPluginBetterTailwindcss,
++    },
++    settings: {
++      "better-tailwindcss": {
++        entryPoint: "app/globals.css",
++      },
++    },
++    rules: {
++      ...eslintPluginBetterTailwindcss.configs["recommended-warn"].rules,
++      "better-tailwindcss/enforce-consistent-line-wrapping": "off",
++      "better-tailwindcss/enforce-consistent-class-order": "off",
++    },
++  },
+ ]);
 
  export default eslintConfig;
 ```
+
+_2025-11-16 追記: 設定について_
+
+- `no-unused-vars` はエラーでなく warn レベルになるようにする
+  - コーディング中にエディタ上でエラーが即座に報告されるのが煩わしいため
+  - warn レベルの問題を CI で検出する想定
+- eslint-plugin-better-tailwindcss
+  - `entryPoint` で create-next-app で作られるグローバル CSS ファイルを指定
+  - recommended ルールを warn レベルで取り込む
+  - 改行と順序のルールは off にし、 Prettier に任せる
 
 ## Prettier 設定
 
@@ -108,13 +131,18 @@ import のソート、 Tailwind CSS のクラス名のソートと改行を行�
   ],
   "importOrder": ["<THIRD_PARTY_MODULES>", "^@/", "^[./]"],
   "tailwindFunctions": ["tv"],
-  "customFunctions": ["tv"],
-  "endingPosition": "absolute-with-indent",
-  "experimentalOptimization": true
+  "customFunctions": ["tv"]
 }
 ```
 
 なお `tailwindFunctions` は [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) の設定で、 `customFunctions` は [prettier-plugin-classnames](https://github.com/ony3000/prettier-plugin-classnames) の設定。
+
+_2025-11-16 追記: prettier-plugin-classnames 関連の変更_
+
+- 以前は `"endingPosition": "absolute-with-indent"` を指定していたが v0.8.0 以降で不要になった:
+  https://github.com/ony3000/prettier-plugin-classnames?tab=readme-ov-file#ending-position
+- `"experimentalOptimization": true` オプションは削除された:
+  https://github.com/ony3000/prettier-plugin-classnames/pull/98
 
 ignore リストに pnpm の lockfile を入れておく。
 
@@ -131,6 +159,7 @@ $ pnpm run format
 ## next-intl 設定
 
 ドキュメントの通り設定する。
+以下は locale-based routing と呼ばれる `https://example.com/ja` のようにパスに言語コードが入る設定。
 
 [App Router setup with i18n routing – Internationalization (i18n) for Next.js](https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing)
 
